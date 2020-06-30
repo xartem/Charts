@@ -37,16 +37,6 @@ class Registrar
     }
 
     /**
-     * Handles the HTTP response of the chart.
-     * It must always be a JsonResponse in order
-     * as specified by the protocol.
-     */
-    protected function handle(BaseChart $chart, Request $request): JsonResponse
-    {
-        return new JsonResponse($chart->handler($request)->toObject());
-    }
-
-    /**
      * Registers new charts into the application.
      */
     public function register(array $charts): void
@@ -70,7 +60,8 @@ class Registrar
                 ->prefix($globalPrefixArray->merge($prefixArray)->implode('/'))
                 ->middleware([...$globalMiddlewares, ...($instance->middlewares ?? [])])
                 ->name("{$globalRouteNamePrefix}.{$routeName}")
-                ->get($name, fn (Request $request) => $this->handle($instance, $request));
+                ->namespace('ConsoleTVs\Charts')
+                ->get($name, 'ChartsController');
         }
     }
 }
