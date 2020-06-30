@@ -41,4 +41,6 @@ return [
     |
     */
     'global_route_name_prefix' => 'charts',
+
+    'cache_key_prefix' => 'charts.routes',
 ];

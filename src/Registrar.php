@@ -55,6 +55,9 @@ class Registrar
             $prefixArray = Str::of($instance->prefix ?? '')->explode('/')->filter()->values();
             // Define the route name for the given chart.
             $routeName = $instance->routeName ?? $name;
+
+            Cache::rememberForever(config('charts.cache_key_prefix') . '.' . $name, $chartClass);
+
             // Register the route for the given chart.
             $this->route
                 ->prefix($globalPrefixArray->merge($prefixArray)->implode('/'))
