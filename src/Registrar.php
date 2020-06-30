@@ -8,6 +8,7 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Routing\Registrar as RouteRegistrar;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class Registrar
@@ -37,16 +38,6 @@ class Registrar
     }
 
     /**
-     * Handles the HTTP response of the chart.
-     * It must always be a JsonResponse in order
-     * as specified by the protocol.
-     */
-    protected function handle(BaseChart $chart, Request $request): JsonResponse
-    {
-        return new JsonResponse($chart->handler($request)->toObject());
-    }
-
-    /**
      * Registers new charts into the application.
      */
     public function register(array $charts): void
@@ -65,12 +56,15 @@ class Registrar
             $prefixArray = Str::of($instance->prefix ?? '')->explode('/')->filter()->values();
             // Define the route name for the given chart.
             $routeName = $instance->routeName ?? $name;
+
+            Cache::put(config('charts.cache_key_prefix') . '.' . $name, $chartClass);
+
             // Register the route for the given chart.
             $this->route
                 ->prefix($globalPrefixArray->merge($prefixArray)->implode('/'))
                 ->middleware([...$globalMiddlewares, ...($instance->middlewares ?? [])])
                 ->name("{$globalRouteNamePrefix}.{$routeName}")
-                ->get($name, fn (Request $request) => $this->handle($instance, $request));
+                ->get($name, 'ConsoleTVs\Charts\ChartsController');
         }
     }
 }
