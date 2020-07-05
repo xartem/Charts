@@ -6,9 +6,6 @@ namespace ConsoleTVs\Charts;
 
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Routing\Registrar as RouteRegistrar;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class Registrar
@@ -56,7 +53,6 @@ class Registrar
             $prefixArray = Str::of($instance->prefix ?? '')->explode('/')->filter()->values();
             // Define the route name for the given chart.
             $routeName = $instance->routeName ?? $name;
-
             // Register the route for the given chart.
             $this->route
                 ->prefix($globalPrefixArray->merge($prefixArray)->implode('/'))
