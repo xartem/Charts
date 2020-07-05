@@ -57,14 +57,13 @@ class Registrar
             // Define the route name for the given chart.
             $routeName = $instance->routeName ?? $name;
 
-            Cache::put(config('charts.cache_key_prefix') . '.' . $name, $chartClass);
-
             // Register the route for the given chart.
             $this->route
                 ->prefix($globalPrefixArray->merge($prefixArray)->implode('/'))
                 ->middleware([...$globalMiddlewares, ...($instance->middlewares ?? [])])
                 ->name("{$globalRouteNamePrefix}.{$routeName}")
-                ->get($name, 'ConsoleTVs\Charts\ChartsController');
+                ->get($name, 'ConsoleTVs\Charts\ChartsController')
+                ->defaults('chart', $instance);
         }
     }
 }
