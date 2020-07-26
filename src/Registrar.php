@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ConsoleTVs\Charts;
 
 use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\Registrar as RouteRegistrar;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -12,6 +13,12 @@ use Illuminate\Support\Str;
 
 class Registrar
 {
+    /**
+     * Stores the application container that
+     * will be used to resolve chart classes.
+     */
+    private Application $app;
+
     /**
      * Stores the application configuration
      * repository that will be used to get the
@@ -30,8 +37,9 @@ class Registrar
      * This class is defined as a sigleton in the
      * application container.
      */
-    public function __construct(Repository $config, RouteRegistrar $route)
+    public function __construct(Application $app, Repository $config, RouteRegistrar $route)
     {
+        $this->app = $app;
         $this->config = $config;
         $this->route = $route;
     }
@@ -58,7 +66,7 @@ class Registrar
 
         foreach ($charts as $chartClass) {
             // Create the chart instance.
-            $instance = new $chartClass();
+            $instance = $this->app->make($chartClass);
             // Get the name of the chart by using the instance name or the class name.
             $name = $instance->name ?? Str::snake(class_basename($chartClass));
             // Clean the prefix and transform it into an array for concatenation.

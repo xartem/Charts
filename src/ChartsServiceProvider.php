@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ConsoleTVs\Charts;
 
 use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\Registrar as RouteRegistrar;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -20,7 +21,8 @@ class ChartsServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/Config/charts.php', 'charts');
         // Register the Chart Registerer singleton class to avoid resolving it
         // multiple times in the application.
-        $this->app->singleton(Registrar::class, fn ($app) => new Registrar(
+        $this->app->singleton(Registrar::class, fn (Application $app) => new Registrar(
+            $app,
             $app->make(Repository::class),
             $app->make(RouteRegistrar::class)
         ));
