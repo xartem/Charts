@@ -13,7 +13,7 @@
 
 Charts is a Laravel library used to create Charts using Chartisan. Chartisan does already have a PHP
 adapter. However, this library attempts to provide more laravel-like features into it by providing support
-for chart creation using the artisan command, middleware support androuting support. This makes handling
+for chart creation using the artisan command, middleware support and routing support. This makes handling
 charts feel more laravel-like. At the end of the day, this library uses Chartisan and can use all
 of its potential. Expect to read the Chartisan docs since this library it's just a simple abstraction.
 
