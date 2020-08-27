@@ -7,8 +7,6 @@ namespace ConsoleTVs\Charts;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\Registrar as RouteRegistrar;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class Registrar
@@ -45,16 +43,6 @@ class Registrar
     }
 
     /**
-     * Handles the HTTP response of the chart.
-     * It must always be a JsonResponse in order
-     * as specified by the protocol.
-     */
-    protected function handle(BaseChart $chart, Request $request): JsonResponse
-    {
-        return new JsonResponse($chart->handler($request)->toObject());
-    }
-
-    /**
      * Registers new charts into the application.
      */
     public function register(array $charts): void
@@ -78,7 +66,8 @@ class Registrar
                 ->prefix($globalPrefixArray->merge($prefixArray)->implode('/'))
                 ->middleware([...$globalMiddlewares, ...($instance->middlewares ?? [])])
                 ->name("{$globalRouteNamePrefix}.{$routeName}")
-                ->get($name, fn (Request $request) => $this->handle($instance, $request));
+                ->get($name, 'ConsoleTVs\Charts\ChartsController')
+                ->defaults('chart', $instance);
         }
     }
 }
