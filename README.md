@@ -13,7 +13,7 @@
 
 Charts is a Laravel library used to create Charts using Chartisan. Chartisan does already have a PHP
 adapter. However, this library attempts to provide more laravel-like features into it by providing support
-for chart creation using the artisan command, middleware support androuting support. This makes handling
+for chart creation using the artisan command, middleware support and routing support. This makes handling
 charts feel more laravel-like. At the end of the day, this library uses Chartisan and can use all
 of its potential. Expect to read the Chartisan docs since this library it's just a simple abstraction.
 
@@ -26,6 +26,15 @@ The documentation for the latest version of charts can be found here by pressing
 ## Screenshot
 
 <p align="center"><img src="https://image.prntscr.com/image/pwONtZIUSOGnxud9Omh4-Q.png"></p>
+
+
+## Previous Version
+
+Unfortunately laravel-charts `v7` is incompatible with our previous version, `v6`, because it has involved [a heavy rewrite](https://github.com/ConsoleTVs/Charts/releases/tag/7.0.0). If you're still stuck on `v6`, you should use:
+- the [`v6` branch of this repo](https://github.com/ConsoleTVs/Charts/tree/v6);
+- the [`v6` version of the documentation](https://v6.charts.erik.cat);
+
+Please note that we consider `v6` unmaintained and unsupported. So you should upgrade to `v7` as soon as possible. We're currently working on an upgrade guide. If you can help, please reach out with an issue - we'll take all the help we can get.
 
 ## License
 
