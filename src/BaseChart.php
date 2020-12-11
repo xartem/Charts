@@ -6,6 +6,7 @@ namespace ConsoleTVs\Charts;
 
 use Chartisan\PHP\Chartisan;
 use Illuminate\Http\Request;
+use ReflectionClass;
 
 abstract class BaseChart
 {
@@ -41,4 +42,20 @@ abstract class BaseChart
      * return the chart instance. Do not return a string or an array.
      */
     abstract public function handler(Request $request): Chartisan;
+
+    public static function __set_state(array $properties)
+    {
+        $klass = new static();
+
+        $refClass = new ReflectionClass($klass);
+
+        foreach ($properties as $name => $value) {
+            $property = $refClass->getProperty($name);
+            $property->setAccessible(true);
+
+            $property->setValue($klass, $value);
+        }
+
+        return $klass;
+    }
 }
